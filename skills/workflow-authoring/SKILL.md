@@ -56,10 +56,26 @@ If the repo has equivalent docs under different names, use the nearest equivalen
 7. Keep string-rich or high-entropy state in JSON files when the DSL surface is awkward.
    Do not force brittle scalar contracts just because a value is logically small.
 
+## Prompt Editing Checklist
+
+When changing a workflow prompt:
+
+- Name the actor: drafter, reviewer, reviser, implementer, or runtime.
+- Do not assign work to an actor that cannot do it. Plans sequence work; reviews decide whether to accept or reject; workflows route and record state.
+- Avoid workflow or DSL terms in provider prompts unless the provider step directly owns that concept.
+- Use plain terms. Define any necessary term locally.
+- Keep generic prompts project-agnostic; put project nouns only in project-specific prompts or inputs.
+- Use existing artifact or template sections before inventing new structure.
+- Prefer one sharp instruction over long negative lists.
+- Check whether the edit changes behavior, review strictness, or only phrasing.
+
 ## Common Mistakes
 
 - Prompt says "the workflow owns..." or "continue the loop".
 - Prompt is asked to manage counters, gate decisions, ledger appends, or keep/discard resets.
+- Prompt tells a plan to escalate, a reviewer to implement, or an implementer to manage loop cycles.
+- Prompt uses undefined jargon such as "gate", "claim", or "workflow" where a plain result, check, or step would be clearer.
+- A generic prompt contains project-specific nouns or examples that narrow its behavior.
 - The same contract is expressed differently in prompt text, workflow YAML, and docs.
 - A one-off workflow invents a second plausible state/report path for the same task.
 - Tests assert literal prompt wording instead of behavior or contracts.
