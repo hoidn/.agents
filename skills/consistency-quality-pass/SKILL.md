@@ -9,6 +9,16 @@ Use this skill to resolve contradictions across project authority surfaces witho
 
 Core rule: prefer current contract completeness over origin labels. Prefer the highest durable authority over stale duplicated wording. Remove label-driven policy and other accidental rigidity while preserving provenance, verification, and claim boundaries.
 
+When context already identifies the relevant changed work, start there instead
+of auditing repo-wide. Broaden only when those changes point to a stale
+contract, index, or authority surface.
+
+Preserve doc boundaries: specs are normative contracts; architecture/design docs
+hold durable design choices; status/index/roadmap docs record completion and
+discoverability; run artifacts and reports keep execution detail. Promote
+ambiguous contracts to specs/design docs, but keep ordinary completion out of
+global specs.
+
 ## Pressure Cases
 
 This skill should prevent these failures:
@@ -116,3 +126,7 @@ Produce all rows under the locked contract. First audit existing roots; promote 
 - Updating prose but not the selector or manifest that the workflow reads.
 - Trusting a status label without checking the producing artifact or manifest.
 - Treating prompt wording as authority when it merely repeated stale context.
+- Auditing the whole repo by default when context already identifies the
+  relevant changed work.
+- Pasting implementation churn into specs when status/index docs are the right
+  surface.
