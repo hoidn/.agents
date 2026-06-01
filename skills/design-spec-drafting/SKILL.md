@@ -42,8 +42,6 @@ The proof should identify the relevant spec/design/test authority and either
 show a minimal executable fixture or record the missing capability as a
 design gap.
 
-When drafting specs, do not promote unproven capability claims into normative
-spec text. Route them back to a design/architecture doc and feasibility proof
-first.
+Specs document accepted capability contracts only.
 
 Do not rely on memory when `docs/index.md` routes to a current source of truth.
