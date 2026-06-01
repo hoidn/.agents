@@ -25,7 +25,19 @@ Before drafting or changing a workflow:
 4. `specs/variables.md`, `specs/dependencies.md`, `specs/providers.md`
 5. `workflows/README.md` and one current example using the same pattern
 
-If the repo has equivalent docs under different names, use the nearest equivalent set.
+For downstream repos that consume the agent-orchestration DSL but do not carry
+the canonical workflow-authoring docs locally, use the canonical source repo at
+`/home/ollie/Documents/agent-orchestration` for items 2-5 above:
+
+- `/home/ollie/Documents/agent-orchestration/docs/workflow_drafting_guide.md`
+- `/home/ollie/Documents/agent-orchestration/specs/dsl.md`
+- `/home/ollie/Documents/agent-orchestration/specs/variables.md`
+- `/home/ollie/Documents/agent-orchestration/specs/dependencies.md`
+- `/home/ollie/Documents/agent-orchestration/specs/providers.md`
+- `/home/ollie/Documents/agent-orchestration/workflows/README.md`
+
+Still read the downstream repo's own `docs/index.md` and workflow/runbook docs
+first for project-local policy, state roots, and artifact contracts.
 
 ## Authoring Checklist
 
@@ -40,9 +52,10 @@ If the repo has equivalent docs under different names, use the nearest equivalen
    - workflow boundary: `inputs` / `outputs`
    - runtime dependencies: `depends_on` / `consumes`
    - provider prompt sources: `input_file`, `asset_file`, prompt injection
-   - artifact storage or lineage: `artifacts`, `expected_outputs`, `output_bundle`, `publishes`
+   - artifact storage or lineage: `artifacts`, `expected_outputs`, `output_bundle`, `variant_output`, `select_variant_output`, `publishes`
+   - runtime-owned materialization/evidence: `materialize_artifacts`, `pre_snapshot`, `consume_bundle`
 
-4. Prefer structured control flow over shell glue when the DSL supports it.
+4. Prefer structured control flow and runtime-owned primitives over shell glue when the DSL supports them.
    Use shell gates only when no structured form fits cleanly.
 
 5. Keep prompts task-local.
@@ -55,6 +68,8 @@ If the repo has equivalent docs under different names, use the nearest equivalen
 
 7. Keep string-rich or high-entropy state in JSON files when the DSL surface is awkward.
    Do not force brittle scalar contracts just because a value is logically small.
+
+8. For v2.14 workflows, use `materialize_artifacts` for deterministic input/target materialization, `pre_snapshot` plus `select_variant_output` for content-based candidate selection, `variant_output` for tagged-union bundles, and `match` or `requires_variant` before referencing variant-only fields.
 
 ## Prompt Editing Checklist
 
