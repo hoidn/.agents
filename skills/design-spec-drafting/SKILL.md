@@ -22,4 +22,24 @@ architecture, design doc, or plan:
 4. Draft against those authorities. If ownership is unclear, state which doc
    should own the contract before editing.
 
+## Feasibility Proof Trigger
+
+When drafting or reviewing a design/spec, check whether it relies on an
+unproven capability claim.
+
+Require a short feasibility proof, or mark the claim as an open prerequisite,
+when the design depends on:
+
+- replacing a special-case path with a generic mechanism;
+- combining subsystems in a shape not covered by existing specs or fixtures;
+- preserving a public API while changing its implementation substrate;
+- a type, lowering, state, resume, runtime, or source-map capability that is not
+  already specified or tested;
+- a negative architecture claim such as no compiler-special branch, no hidden
+  input, no runtime ref value, or no report parsing.
+
+The proof should identify the relevant spec/design/test authority and either
+show a minimal executable fixture or record the missing capability as a
+design/spec gap.
+
 Do not rely on memory when `docs/index.md` routes to a current source of truth.
