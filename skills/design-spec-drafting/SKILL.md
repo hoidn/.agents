@@ -24,8 +24,8 @@ architecture, design doc, or plan:
 
 ## Feasibility Proof Trigger
 
-When drafting or reviewing a design/spec, check whether it relies on an
-unproven capability claim.
+When drafting or reviewing a design or architecture doc, check whether it relies
+on an unproven capability claim.
 
 Require a short feasibility proof, or mark the claim as an open prerequisite,
 when the design depends on:
@@ -40,6 +40,10 @@ when the design depends on:
 
 The proof should identify the relevant spec/design/test authority and either
 show a minimal executable fixture or record the missing capability as a
-design/spec gap.
+design gap.
+
+When drafting specs, do not promote unproven capability claims into normative
+spec text. Route them back to a design/architecture doc and feasibility proof
+first.
 
 Do not rely on memory when `docs/index.md` routes to a current source of truth.
