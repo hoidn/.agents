@@ -19,6 +19,26 @@ discoverability; run artifacts and reports keep execution detail. Promote
 ambiguous contracts to specs/design docs, but keep ordinary completion out of
 global specs.
 
+## Index And Catalog Surfaces
+
+`docs/index.md` is the repo's primary documentation hub. More generally, index,
+catalog, map, README, manifest, and hub documents are discoverability
+authorities, not semantic authorities. They route readers to the current source
+of truth across specs, design docs, plans, artifacts, prompts, workflows, and
+runtime evidence.
+
+During a consistency pass, check relevant index/catalog surfaces when adding,
+renaming, deprecating, or changing the routing/ownership of specs, system
+architecture, design docs, plans, implementation architecture, workflows,
+prompts, artifacts, evidence, or status labels.
+
+Treat stale or missing routing as `discoverability_gap`.
+
+Patch index/catalog surfaces as routing layers: descriptions, links, status
+labels, reading paths, and clarification pointers. Behavior and policy should be
+owned by the linked spec, design doc, plan, artifact manifest, or runtime
+evidence.
+
 ## Pressure Cases
 
 This skill should prevent these failures:
