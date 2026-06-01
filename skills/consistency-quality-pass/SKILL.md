@@ -49,6 +49,31 @@ This skill should prevent these failures:
 - **Routing mismatch:** human-readable roadmap or backlog prose disagrees with the selector manifest, queue state, or workflow state.
 - **Discoverability gap:** a result exists, but canonical indexes or summaries do not make it findable enough for future work.
 
+## Contract Drift Sweep
+
+When a pass changes or stabilizes a durable concept, derive its concept
+footprint before patching dependent surfaces.
+
+The footprint includes:
+
+- names: public terms, symbols, fields, statuses, commands, files, artifacts;
+- roles: producer, consumer, owner, authority, reviewer, runtime, adapter;
+- states: lifecycle labels, terminal outcomes, failure modes, waivers;
+- boundaries: public/internal, normative/informative, runtime/authoring,
+  generated/authored, semantic/view;
+- evidence: required artifacts, reports, manifests, tests, snapshots, run state;
+- examples: snippets, templates, fixtures, prompts, guides, compatibility docs.
+
+Use that footprint to run a focused sweep across the relevant authority chain:
+specs, system architecture, implementation architecture, design docs, plans,
+authoring guides, prompts, workflow definitions, templates, fixtures, manifests,
+indexes/catalogs, and generated evidence references.
+
+Patch stale restatements, examples, status labels, routing entries, and open
+questions so they point to the same owning contract. Preserve intentional
+legacy or compatibility wording only when it is explicitly labeled and mapped
+to the current concept.
+
 ## Process
 
 1. State the disputed behavior in one sentence.
@@ -96,6 +121,8 @@ This skill should prevent these failures:
 
 6. Validate.
    Choose checks that match the touched surface:
+   - `rg` over the concept footprint for stale names, examples, status labels,
+     unresolved open questions, and missing new-rule coverage
    - `rg` for old contradictory phrases and new rule coverage
    - `git diff` over touched files
    - markdown/frontmatter parse smoke checks
