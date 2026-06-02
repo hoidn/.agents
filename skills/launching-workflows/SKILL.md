@@ -23,6 +23,7 @@ periodic recovery loop.
 
 3. Capture the actual run id.
    - Read it from tmux output: `Created new run: <run_id>`.
+   - For `resume`, try plain `resume <run_id>` when preserving state is intended. If `--force-restart` is required, parse the new id from `Force restarting workflow with new run ID: ...`; watchdogs and status checks must target that new id.
    - Confirm `.orchestrate/runs/<run_id>/state.json` exists.
    - Do not point watchdogs at an old failed run unless deliberately repairing that old run.
 
@@ -34,6 +35,7 @@ periodic recovery loop.
 5. Verify both processes.
    - Capture both tmux panes.
    - Check the target run state.
+   - Compare the tmux pane name, process argv, `monitor_process.json`, and watchdog target; kill stale sessions when they disagree.
    - Check the first watchdog probe output is `RUNNING_OK`, `COMPLETED`, or a handled repair state.
 
 6. Report monitor commands.
@@ -80,4 +82,3 @@ print("current_step:", d.get("current_step"))
 print("updated_at:", d.get("updated_at"))
 PY
 ```
-
