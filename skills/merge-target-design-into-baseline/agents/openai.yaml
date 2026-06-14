@@ -1,0 +1,4 @@
+interface:
+  display_name: "Merge Target Design Into Baseline"
+  short_description: "Merge completed target designs into durable baseline specs."
+  default_prompt: "Merge this completed target design into the relevant baseline design without preserving temporary tranche history."
