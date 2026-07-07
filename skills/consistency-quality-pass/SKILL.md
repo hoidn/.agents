@@ -9,6 +9,8 @@ Use this skill to resolve contradictions across project authority surfaces witho
 
 Core rule: prefer current contract completeness over origin labels. Prefer the highest durable authority over stale duplicated wording. Remove label-driven policy and other accidental rigidity while preserving provenance, verification, and claim boundaries.
 
+References in durable docs should be symbol/path/section-based, not line-number-based; use exact line numbers only for immutable evidence artifacts or when the line itself is the claim under review.
+
 When context already identifies the relevant changed work, start there instead
 of auditing repo-wide. Broaden only when those changes point to a stale
 contract, index, or authority surface.
