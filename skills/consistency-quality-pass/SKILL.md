@@ -1,6 +1,6 @@
 ---
 name: consistency-quality-pass
-description: Use when docs, plans, backlog items, workflow prompts, YAML, manifests, run state, artifact labels, evidence claims, or selector behavior disagree; when stale wording causes brittle decisions; or when status labels obscure the actual contract.
+description: Use when docs, plans, task items, prompts, configuration, machine-readable state, artifact labels, evidence claims, or automated selection logic disagree; when stale wording causes brittle decisions; or when status labels obscure the actual contract.
 ---
 
 # Consistency Quality Pass
@@ -23,8 +23,7 @@ global specs.
 
 ## Index And Catalog Surfaces
 
-`docs/index.md` is the repo's primary documentation hub. More generally, index,
-catalog, map, README, manifest, and hub documents are discoverability
+Index, catalog, map, README, manifest, and hub documents are discoverability
 authorities, not semantic authorities. They route readers to the current source
 of truth across specs, design docs, plans, artifacts, prompts, workflows, and
 runtime evidence.
@@ -45,10 +44,10 @@ evidence.
 
 This skill should prevent these failures:
 
-- **Label-driven rejection:** an artifact is rerun only because it was called exploratory or decision-support, even though its dataset, config, metrics, visuals, and provenance may satisfy the current contract.
-- **Stale duplicate authority:** a backlog item says "fresh run required" while a governing design allows audit/recover/promote.
+- **Label-driven rejection:** an artifact is redone only because of how it was once labeled (e.g. "draft", "exploratory"), even though its inputs, configuration, results, and provenance may satisfy the current contract.
+- **Stale duplicate authority:** a task item says "must be redone from scratch" while a governing design allows audit/recover/promote.
 - **Prompt amplification:** a generic planning prompt faithfully preserves over-specific or stale wording from a selected item.
-- **Routing mismatch:** human-readable roadmap or backlog prose disagrees with the selector manifest, queue state, or workflow state.
+- **Routing mismatch:** human-readable roadmap or task prose disagrees with the machine-readable selection, queue, or workflow state.
 - **Discoverability gap:** a result exists, but canonical indexes or summaries do not make it findable enough for future work.
 
 ## Contract Drift Sweep
@@ -79,17 +78,17 @@ to the current concept.
 ## Process
 
 1. State the disputed behavior in one sentence.
-   Example: "The workflow is rerunning FFNO instead of auditing the existing row."
+   Example: "The workflow is redoing an artifact from scratch instead of auditing the existing one."
 
 2. Find authority surfaces.
    Check only the relevant set:
    - specs or repo policy
    - roadmap and steering docs
    - design docs
-   - backlog item frontmatter and body
+   - task/backlog item metadata and body
    - execution plan
-   - workflow YAML and prompts
-   - selector or manifest scripts
+   - workflow definitions and prompts
+   - automation that selects or routes work
    - queue state, run state, or artifact manifests
    - durable summaries and docs indexes
 
@@ -98,7 +97,7 @@ to the current concept.
    - `semantic_conflict`: two sources require different behavior
    - `stale_duplicate`: old wording survived after authority changed
    - `over_specific_instruction`: wording forces one implementation path unnecessarily
-   - `missing_recovery_path`: rerun/block is required when audit or recovery could be valid
+   - `missing_recovery_path`: redo/block is required when audit or recovery could be valid
    - `label_driven_policy`: labels decide admissibility instead of evidence fields
    - `routing_mismatch`: prose and machine-readable selection state disagree
    - `discoverability_gap`: result exists but is not findable from canonical entry points
@@ -107,7 +106,7 @@ to the current concept.
    Prefer, in order:
    - normative specs or explicit repo policy
    - current approved design
-   - active roadmap or backlog gate
+   - active roadmap or task gate
    - durable artifact manifest
    - generated reports and summaries
    - prompt wording or stale duplicated prose
@@ -116,21 +115,20 @@ to the current concept.
 
 5. Patch narrowly.
    - Replace label-based rules with contract-based rules.
-   - Replace "always rerun" with "audit/recover/promote when complete; rerun on unrecoverable mismatch" when that preserves the contract.
-   - Remove or update stale duplicate wording across dependent backlog/design/prompt surfaces.
+   - Replace "always redo" with "audit/recover/promote when complete; redo on unrecoverable mismatch" when that preserves the contract.
+   - Remove or update stale duplicate wording across dependent task/design/prompt surfaces.
    - Keep genuine safety gates: provenance, verification, phase boundaries, and claim limits.
    - Update machine-readable routing state when the change affects selection, dependencies, or eligibility.
 
 6. Validate.
    Choose checks that match the touched surface:
-   - `rg` over the concept footprint for stale names, examples, status labels,
-     unresolved open questions, and missing new-rule coverage
-   - `rg` for old contradictory phrases and new rule coverage
+   - text search over the concept footprint for stale names, examples, status
+     labels, unresolved open questions, and missing new-rule coverage
+   - text search for old contradictory phrases and new rule coverage
    - `git diff` over touched files
-   - markdown/frontmatter parse smoke checks
-   - JSON/YAML parser checks
-   - selector/manifest validators when routing changed
-   - workflow dry-run or orchestrator smoke check when YAML or prompts changed
+   - parse/syntax smoke checks for any machine-readable files touched
+   - validators for selection or routing state when routing changed
+   - dry-run or smoke check when workflow definitions or prompts changed
 
 7. Report.
    Include:
@@ -146,33 +144,33 @@ to the current concept.
 Bad:
 
 ```text
-Do not reuse historical roots as paper evidence.
+Do not reuse previously generated artifacts as final evidence.
 ```
 
 Good:
 
 ```text
-Do not reuse roots with unrecoverable contract or provenance gaps as paper evidence. A root's original exploratory or decision-support label is not by itself disqualifying if the current audit proves the row contract is complete.
+Do not reuse artifacts with unrecoverable contract or provenance gaps as final evidence. An artifact's original informal label is not by itself disqualifying if a current audit proves its contract is complete.
 ```
 
 Bad:
 
 ```text
-Run all rows fresh under one output root.
+Regenerate all deliverables from scratch in one new location.
 ```
 
 Good:
 
 ```text
-Produce all rows under the locked contract. First audit existing roots; promote them if the contract is satisfied directly or after deterministic recovery. Rerun only rows with actual mismatch or unrecoverable gaps.
+Produce all deliverables under the locked contract. First audit existing ones; promote them if the contract is satisfied directly or after deterministic recovery. Regenerate only those with actual mismatch or unrecoverable gaps.
 ```
 
 ## Common Mistakes
 
-- Fixing only the selected backlog item while leaving the governing design contradictory.
+- Fixing only the selected task item while leaving the governing design contradictory.
 - Adding a special-case exception when a general contract rule is simpler.
 - Weakening evidence requirements instead of making admissibility evidence-based.
-- Updating prose but not the selector or manifest that the workflow reads.
+- Updating prose but not the machine-readable state the automation reads.
 - Trusting a status label without checking the producing artifact or manifest.
 - Treating prompt wording as authority when it merely repeated stale context.
 - Auditing the whole repo by default when context already identifies the

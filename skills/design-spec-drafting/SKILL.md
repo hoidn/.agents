@@ -5,6 +5,8 @@ description: Use when drafting or revising specs, system architecture, implement
 
 # Design Spec Drafting
 
+Keep durable specs/designs status-independent: document contracts and evidence requirements, not live blocker status, work scheduling, or next-work decisions.
+
 Before drafting or revising a spec, system architecture, implementation
 architecture, design doc, or plan:
 

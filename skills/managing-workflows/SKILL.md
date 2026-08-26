@@ -33,6 +33,38 @@ Manage means actively supervising a running workflow until it is healthy, comple
 6. Run the narrowest validation: dry-run for workflow changes, targeted tests for scripts, status check for resumed runs.
 7. Report what changed, what was verified, and whether progress is real.
 
+## Provider Capacity Stalls
+
+Codex provider sessions can stall on `Selected model is at capacity. Please
+try a different model.` — the turn ends and the session waits for input. The
+deterministic recovery is injecting `proceed` + Enter into the session's tmux
+pane.
+
+An installed watchdog automates this:
+
+- Script: `~/.local/bin/capacity-watchdog.sh` (log:
+  `~/.local/state/capacity-watchdog.log`)
+- Runs as tmux session `capacity-watchdog` on
+  `/tmp/claude-tmux-sockets/claude.sock`; relaunch after reboot with
+  `tmux -S /tmp/claude-tmux-sockets/claude.sock new -d -s capacity-watchdog "bash ~/.local/bin/capacity-watchdog.sh"`.
+- Before manually unblocking a Codex session or starting another supervisor,
+  check whether it is already running to avoid double injection.
+
+Detection rules the watchdog encodes (keep these if reimplementing):
+
+- match only the live pane tail (last ~10 lines above the composer); a wider
+  capture re-matches stale scrollback and injects into a healthy session;
+- never inject while the session shows an active turn (`esc to interrupt`);
+- send text and Enter separately with delays, then a second Enter — the Codex
+  TUI drops an Enter that follows text too quickly;
+- fire once per appearance, re-arm when the message clears, timed retry
+  (180s) while it persists.
+
+Current target is the single pane `orchestration:0.1` on
+`/tmp/tmux-1000/default`. Intended generalization: enumerate all Codex
+provider panes each poll cycle (match on pane command/title) with per-pane
+armed/retry state, so workflow-launched provider sessions are covered too.
+
 ## Prompt Change Queue
 
 When queuing a prompt change, append:
