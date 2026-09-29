@@ -1,13 +1,13 @@
 ---
 name: consistency-quality-pass
-description: Use when docs, plans, task items, prompts, configuration, machine-readable state, artifact labels, evidence claims, or automated selection logic disagree; when stale wording causes brittle decisions; or when status labels obscure the actual contract.
+description: Use when specs, guides, examples, indices, or documentation routing are inconsistent, stale, or hard to discover after changes; or when plans, prompts, configuration, evidence claims, or automated selection logic disagree with their governing contract.
 ---
 
 # Consistency Quality Pass
 
-Use this skill to resolve contradictions across project authority surfaces without weakening the underlying contract.
+Keep current specs, designs, guides, examples, indices, and reading paths consistent and up to date so the next reader can find and follow the governing contract without reconstructing session history.
 
-Core rule: prefer current contract completeness over origin labels. Prefer the highest durable authority over stale duplicated wording. Remove label-driven policy and other accidental rigidity while preserving provenance, verification, and claim boundaries.
+Default priority: fix durable documentation and discoverability before tidying historical artifacts. Prefer the highest durable authority over stale duplicated wording, without weakening provenance, verification, or claim boundaries. An explicit user scope, including an artifact-only task, takes precedence.
 
 References in durable docs should be symbol/path/section-based, not line-number-based; use exact line numbers only for immutable evidence artifacts or when the line itself is the claim under review.
 
@@ -21,6 +21,13 @@ discoverability; run artifacts and reports keep execution detail. Promote
 ambiguous contracts to specs/design docs, but keep ordinary completion out of
 global specs.
 
+Historical artifacts are evidence for resolving current documentation, not the
+default editing queue. Preserve their recorded configuration and results; fix
+their presentation when a current route misrepresents them or the user requests
+it. Relabeling old PNGs, regenerating reports, or writing a new audit summary
+does not substitute for correcting the owning docs and their reader-facing
+routes. Do not re-execute experiments merely to align historical labels.
+
 ## Index And Catalog Surfaces
 
 Index, catalog, map, README, manifest, and hub documents are discoverability
@@ -28,10 +35,11 @@ authorities, not semantic authorities. They route readers to the current source
 of truth across specs, design docs, plans, artifacts, prompts, workflows, and
 runtime evidence.
 
-During a consistency pass, check relevant index/catalog surfaces when adding,
-renaming, deprecating, or changing the routing/ownership of specs, system
-architecture, design docs, plans, implementation architecture, workflows,
-prompts, artifacts, evidence, or status labels.
+Start from the relevant canonical entry points (such as the documentation hub,
+README, or study index), then follow their links to the owning contract and
+applicable guide. Check these routes when behavior, defaults, commands, status,
+or ownership changes, even if no file was renamed. A working link to a stale
+recipe or superseded authority is still a routing defect.
 
 Treat stale or missing routing as `discoverability_gap`.
 
@@ -44,6 +52,9 @@ evidence.
 
 This skill should prevent these failures:
 
+- **Current-doc drift:** a spec adopts a new default while the guide's example still teaches the old one.
+- **Stale reading path:** a hub, index, or README leads readers to a superseded plan or omits the current guide.
+- **Artifact-first distraction:** many historical labels are corrected while current guides, specs, and indices still disagree.
 - **Label-driven rejection:** an artifact is redone only because of how it was once labeled (e.g. "draft", "exploratory"), even though its inputs, configuration, results, and provenance may satisfy the current contract.
 - **Stale duplicate authority:** a task item says "must be redone from scratch" while a governing design allows audit/recover/promote.
 - **Prompt amplification:** a generic planning prompt faithfully preserves over-specific or stale wording from a selected item.
@@ -77,20 +88,24 @@ to the current concept.
 
 ## Process
 
-1. State the disputed behavior in one sentence.
-   Example: "The workflow is redoing an artifact from scratch instead of auditing the existing one."
+1. Bound the work and state what must agree.
+   For "yesterday's work", recover the changed concepts from the diff, plans,
+   or session history, then trace their durable docs; do not default to an
+   artifact inventory. Example: "The approved default changed, but the guide
+   and its index entry still teach the previous recipe."
 
 2. Find authority surfaces.
    Check only the relevant set:
    - specs or repo policy
    - roadmap and steering docs
    - design docs
+   - current user/developer guides, commands, examples, and templates
+   - durable summaries, docs indices, README links, and reading paths
    - task/backlog item metadata and body
    - execution plan
    - workflow definitions and prompts
    - automation that selects or routes work
    - queue state, run state, or artifact manifests
-   - durable summaries and docs indexes
 
 3. Classify the inconsistency.
    Use these labels in notes or the final report:
@@ -114,6 +129,10 @@ to the current concept.
    If the correct rule is missing, write it once in the highest durable surface that governs future behavior.
 
 5. Patch narrowly.
+   - Correct the owning contract where needed, then reconcile dependent guides,
+     examples, summaries, indices, and routes within the changed concept's scope.
+   - Distinguish current instructions from explicitly scoped historical records;
+     prefer a clear pointer over another copy of the same rule.
    - Replace label-based rules with contract-based rules.
    - Replace "always redo" with "audit/recover/promote when complete; redo on unrecoverable mismatch" when that preserves the contract.
    - Remove or update stale duplicate wording across dependent task/design/prompt surfaces.
@@ -122,6 +141,10 @@ to the current concept.
 
 6. Validate.
    Choose checks that match the touched surface:
+   - follow the relevant entry-point-to-contract-to-guide paths as a new reader;
+     confirm the destinations, descriptions, status, and authority agree
+   - check local links and section anchors, and compare documented commands,
+     defaults, and examples with the owning contract and implementation
    - text search over the concept footprint for stale names, examples, status
      labels, unresolved open questions, and missing new-rule coverage
    - text search for old contradictory phrases and new rule coverage
@@ -132,6 +155,7 @@ to the current concept.
 
 7. Report.
    Include:
+   - current documentation and discoverability gaps fixed, then any artifact changes
    - root cause
    - source of truth chosen
    - files changed
@@ -139,18 +163,22 @@ to the current concept.
    - verification run
    - remaining intentional distinctions
 
+   A documentation pass is not complete while known in-scope contradictions
+   remain in current docs or canonical routes still lead to obsolete guidance.
+   This does not require a repo-wide audit or cosmetic normalization of history.
+
 ## Good Rewrites
 
 Bad:
 
 ```text
-Do not reuse previously generated artifacts as final evidence.
+The implementation uses the new default; the historical report now says "old".
 ```
 
 Good:
 
 ```text
-Do not reuse artifacts with unrecoverable contract or provenance gaps as final evidence. An artifact's original informal label is not by itself disqualifying if a current audit proves its contract is complete.
+The owning contract, current guide and runnable example describe the new default; the index routes to them. The historical report keeps its original settings and is identified as history where current docs cite it.
 ```
 
 Bad:
@@ -167,6 +195,9 @@ Produce all deliverables under the locked contract. First audit existing ones; p
 
 ## Common Mistakes
 
+- Spending the pass on historical labels while current specs, guides, examples, or indices remain inconsistent.
+- Writing a new report instead of fixing the docs that future readers actually use.
+- Checking that links resolve without checking whether they route to the current authority and recipe.
 - Fixing only the selected task item while leaving the governing design contradictory.
 - Adding a special-case exception when a general contract rule is simpler.
 - Weakening evidence requirements instead of making admissibility evidence-based.
