@@ -89,10 +89,14 @@ to the current concept.
 ## Process
 
 1. Bound the work and state what must agree.
+   Derive scope from the affected concepts and contracts, not merely the
+   initial file list.
    For "yesterday's work", recover the changed concepts from the diff, plans,
    or session history, then trace their durable docs; do not default to an
    artifact inventory. Example: "The approved default changed, but the guide
    and its index entry still teach the previous recipe."
+   Respect explicit scope limits; report affected surfaces outside them rather
+   than silently expanding the task.
 
 2. Find authority surfaces.
    Check only the relevant set:
@@ -145,9 +149,13 @@ to the current concept.
      confirm the destinations, descriptions, status, and authority agree
    - check local links and section anchors, and compare documented commands,
      defaults, and examples with the owning contract and implementation
-   - text search over the concept footprint for stale names, examples, status
-     labels, unresolved open questions, and missing new-rule coverage
-   - text search for old contradictory phrases and new rule coverage
+   - resolve every cited path, selector, and command in scope by file/symbol
+     lookup or safe execution
+   - search affected surfaces using former and current terminology, including
+     equivalent descriptions of the same rule; check meaning, not just matching
+     words, and that the new rule appears wherever a dependent surface restates
+     it. Remaining old wording must be consistent with the current contract or
+     clearly scoped as historical
    - `git diff` over touched files
    - parse/syntax smoke checks for any machine-readable files touched
    - validators for selection or routing state when routing changed
@@ -161,11 +169,14 @@ to the current concept.
    - files changed
    - old rule versus new rule
    - verification run
-   - remaining intentional distinctions
+   - remaining intentional distinctions, exclusions, and unresolved gaps
 
-   A documentation pass is not complete while known in-scope contradictions
-   remain in current docs or canonical routes still lead to obsolete guidance.
-   This does not require a repo-wide audit or cosmetic normalization of history.
+   Distinguish correctness from coverage: report whether inspected surfaces
+   agree, and whether the identified changes were traced through their relevant
+   authorities, dependents, and discovery routes. Working links, consistent
+   inspected files, or approval of a narrow plan do not establish coverage.
+   Completion requires resolving known in-scope contradictions and obsolete
+   current guidance, not a repository-wide audit.
 
 ## Good Rewrites
 
