@@ -5,7 +5,11 @@ description: Use when specs, guides, examples, indices, or documentation routing
 
 # Consistency Quality Pass
 
-Keep current specs, designs, guides, examples, indices, and reading paths consistent and up to date so the next reader can find and follow the governing contract without reconstructing session history.
+Make the project's durable documentation useful, discoverable, and correct so readers can understand the system or complete a task without reconstructing session history.
+
+Start with what the reader needs to understand or do. Agreement alone is not
+enough: the relevant page must explain the prerequisites, choices, and limits
+needed to use it, with examples where they help.
 
 Default priority: fix durable documentation and discoverability before tidying historical artifacts. Prefer the highest durable authority over stale duplicated wording, without weakening provenance, verification, or claim boundaries. An explicit user scope, including an artifact-only task, takes precedence.
 
@@ -21,19 +25,15 @@ discoverability; run artifacts and reports keep execution detail. Promote
 ambiguous contracts to specs/design docs, but keep ordinary completion out of
 global specs.
 
-Historical artifacts are evidence for resolving current documentation, not the
-default editing queue. Preserve their recorded configuration and results; fix
-their presentation when a current route misrepresents them or the user requests
-it. Relabeling old PNGs, regenerating reports, or writing a new audit summary
-does not substitute for correcting the owning docs and their reader-facing
-routes. Do not re-execute experiments merely to align historical labels.
+Historical artifacts inform current documentation; they are not the default
+editing queue. Preserve recorded configurations and results; fix presentation
+when current routes misrepresent them or the user requests it. Do not re-execute
+experiments merely to align historical labels.
 
 ## Index And Catalog Surfaces
 
-Index, catalog, map, README, manifest, and hub documents are discoverability
-authorities, not semantic authorities. They route readers to the current source
-of truth across specs, design docs, plans, artifacts, prompts, workflows, and
-runtime evidence.
+Indices, catalogs, READMEs, manifests, and hubs route readers to current
+authority; they do not independently define behavior or policy.
 
 Start from the relevant canonical entry points (such as the documentation hub,
 README, or study index), then follow their links to the owning contract and
@@ -41,12 +41,8 @@ applicable guide. Check these routes when behavior, defaults, commands, status,
 or ownership changes, even if no file was renamed. A working link to a stale
 recipe or superseded authority is still a routing defect.
 
-Treat stale or missing routing as `discoverability_gap`.
-
-Patch index/catalog surfaces as routing layers: descriptions, links, status
-labels, reading paths, and clarification pointers. Behavior and policy should be
-owned by the linked spec, design doc, plan, artifact manifest, or runtime
-evidence.
+Patch their descriptions, links, status labels, and reading paths. Keep the
+rules in the linked owning document rather than duplicating them in the index.
 
 ## Pressure Cases
 
@@ -54,12 +50,9 @@ This skill should prevent these failures:
 
 - **Current-doc drift:** a spec adopts a new default while the guide's example still teaches the old one.
 - **Stale reading path:** a hub, index, or README leads readers to a superseded plan or omits the current guide.
+- **Consistent but unusable:** pages agree but omit prerequisites or choices readers need to perform the task.
 - **Artifact-first distraction:** many historical labels are corrected while current guides, specs, and indices still disagree.
-- **Label-driven rejection:** an artifact is redone only because of how it was once labeled (e.g. "draft", "exploratory"), even though its inputs, configuration, results, and provenance may satisfy the current contract.
-- **Stale duplicate authority:** a task item says "must be redone from scratch" while a governing design allows audit/recover/promote.
-- **Prompt amplification:** a generic planning prompt faithfully preserves over-specific or stale wording from a selected item.
 - **Routing mismatch:** human-readable roadmap or task prose disagrees with the machine-readable selection, queue, or workflow state.
-- **Discoverability gap:** a result exists, but canonical indexes or summaries do not make it findable enough for future work.
 
 ## Contract Drift Sweep
 
@@ -76,10 +69,9 @@ The footprint includes:
 - evidence: required artifacts, reports, manifests, tests, snapshots, run state;
 - examples: snippets, templates, fixtures, prompts, guides, compatibility docs.
 
-Use that footprint to run a focused sweep across the relevant authority chain:
-specs, system architecture, implementation architecture, design docs, plans,
-authoring guides, prompts, workflow definitions, templates, fixtures, manifests,
-indexes/catalogs, and generated evidence references.
+Follow that footprint from the owning contract through dependent guides,
+examples, prompts, workflows, and discovery routes, including generated
+references where relevant.
 
 Patch stale restatements, examples, status labels, routing entries, and open
 questions so they point to the same owning contract. Preserve intentional
@@ -99,38 +91,20 @@ to the current concept.
    than silently expanding the task.
 
 2. Find authority surfaces.
-   Check only the relevant set:
-   - specs or repo policy
-   - roadmap and steering docs
-   - design docs
-   - current user/developer guides, commands, examples, and templates
-   - durable summaries, docs indices, README links, and reading paths
-   - task/backlog item metadata and body
-   - execution plan
-   - workflow definitions and prompts
-   - automation that selects or routes work
-   - queue state, run state, or artifact manifests
+   Start with the owning spec or design, applicable user/developer guide, and
+   reader entry points. Consult plans, prompts, workflow state, or manifests
+   when they explain the affected behavior; do not make them the default queue.
 
-3. Classify the inconsistency.
-   Use these labels in notes or the final report:
-   - `semantic_conflict`: two sources require different behavior
-   - `stale_duplicate`: old wording survived after authority changed
-   - `over_specific_instruction`: wording forces one implementation path unnecessarily
-   - `missing_recovery_path`: redo/block is required when audit or recovery could be valid
-   - `label_driven_policy`: labels decide admissibility instead of evidence fields
-   - `routing_mismatch`: prose and machine-readable selection state disagree
-   - `discoverability_gap`: result exists but is not findable from canonical entry points
+3. Identify the reader-facing problem.
+   Describe what readers cannot find, understand, or safely follow: conflicting
+   rules, missing guidance, stale examples, unnecessary restrictions, or a
+   misleading route. No classification labels are required.
 
 4. Decide the source of truth.
-   Prefer, in order:
-   - normative specs or explicit repo policy
-   - current approved design
-   - active roadmap or task gate
-   - durable artifact manifest
-   - generated reports and summaries
-   - prompt wording or stale duplicated prose
-
-   If the correct rule is missing, write it once in the highest durable surface that governs future behavior.
+   Follow the project's authority rules. Governing specs, policy, and approved
+   designs outrank summaries or copied prompt wording. Plans supply scoped
+   decisions and evidence; put lasting guidance in the appropriate maintained
+   spec, design, or guide. Do not invent policy to fill a documentation gap.
 
 5. Patch narrowly.
    - Correct the owning contract where needed, then reconcile dependent guides,
@@ -162,14 +136,8 @@ to the current concept.
    - dry-run or smoke check when workflow definitions or prompts changed
 
 7. Report.
-   Include:
-   - current documentation and discoverability gaps fixed, then any artifact changes
-   - root cause
-   - source of truth chosen
-   - files changed
-   - old rule versus new rule
-   - verification run
-   - remaining intentional distinctions, exclusions, and unresolved gaps
+   Briefly state what readers can now find or use, where it lives, what was
+   checked, and any intentional distinctions, exclusions, or unresolved gaps.
 
    Distinguish correctness from coverage: report whether inspected surfaces
    agree, and whether the identified changes were traced through their relevant
@@ -192,29 +160,13 @@ Good:
 The owning contract, current guide and runnable example describe the new default; the index routes to them. The historical report keeps its original settings and is identified as history where current docs cite it.
 ```
 
-Bad:
-
-```text
-Regenerate all deliverables from scratch in one new location.
-```
-
-Good:
-
-```text
-Produce all deliverables under the locked contract. First audit existing ones; promote them if the contract is satisfied directly or after deterministic recovery. Regenerate only those with actual mismatch or unrecoverable gaps.
-```
-
 ## Common Mistakes
 
-- Spending the pass on historical labels while current specs, guides, examples, or indices remain inconsistent.
 - Writing a new report instead of fixing the docs that future readers actually use.
 - Checking that links resolve without checking whether they route to the current authority and recipe.
-- Fixing only the selected task item while leaving the governing design contradictory.
-- Adding a special-case exception when a general contract rule is simpler.
+- Fixing only selected files while dependent guidance remains contradictory.
 - Weakening evidence requirements instead of making admissibility evidence-based.
 - Updating prose but not the machine-readable state the automation reads.
-- Trusting a status label without checking the producing artifact or manifest.
-- Treating prompt wording as authority when it merely repeated stale context.
 - Auditing the whole repo by default when context already identifies the
   relevant changed work.
 - Pasting implementation churn into specs when status/index docs are the right
