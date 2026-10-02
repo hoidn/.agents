@@ -1,6 +1,6 @@
 ---
 name: consistency-quality-pass
-description: Use when specs, guides, examples, indices, or documentation routing are inconsistent, stale, or hard to discover after changes; or when plans, prompts, configuration, evidence claims, or automated selection logic disagree with their governing contract.
+description: Use when specs, guides, examples, indices, or documentation routing are inconsistent, stale, hard to discover, or missing the prerequisites and choices a reader needs after changes; or when plans, prompts, configuration, evidence claims, or automated selection logic disagree with their governing contract.
 ---
 
 # Consistency Quality Pass
@@ -8,10 +8,15 @@ description: Use when specs, guides, examples, indices, or documentation routing
 Make the project's durable documentation useful, discoverable, and correct so readers can understand the system or complete a task without reconstructing session history.
 
 Start with what the reader needs to understand or do. Agreement alone is not
-enough: the relevant page must explain the prerequisites, choices, and limits
-needed to use it, with examples where they help.
+enough: within the changed concept's scope, the relevant page must explain the
+prerequisites, choices, and limits needed to use it, with examples where they
+help. Usability of pages outside that scope is reported, not rewritten.
 
-Default priority: fix durable documentation and discoverability before tidying historical artifacts. Prefer the highest durable authority over stale duplicated wording, without weakening provenance, verification, or claim boundaries. An explicit user scope, including an artifact-only task, takes precedence.
+Edit maintained contracts, designs, guides, examples, entry points, and active
+selection state. Use historical records as evidence. If a current route
+misrepresents history, correct that route; add a short notice to the historical
+record only when needed. Preserve its body and results unless the user asks
+otherwise. Never rerun an experiment merely to change its label.
 
 References in durable docs should be symbol/path/section-based, not line-number-based; use exact line numbers only for immutable evidence artifacts or when the line itself is the claim under review.
 
@@ -24,11 +29,6 @@ hold durable design choices; status/index/roadmap docs record completion and
 discoverability; run artifacts and reports keep execution detail. Promote
 ambiguous contracts to specs/design docs, but keep ordinary completion out of
 global specs.
-
-Historical artifacts inform current documentation; they are not the default
-editing queue. Preserve recorded configurations and results; fix presentation
-when current routes misrepresent them or the user requests it. Do not re-execute
-experiments merely to align historical labels.
 
 ## Index And Catalog Surfaces
 
@@ -44,40 +44,6 @@ recipe or superseded authority is still a routing defect.
 Patch their descriptions, links, status labels, and reading paths. Keep the
 rules in the linked owning document rather than duplicating them in the index.
 
-## Pressure Cases
-
-This skill should prevent these failures:
-
-- **Current-doc drift:** a spec adopts a new default while the guide's example still teaches the old one.
-- **Stale reading path:** a hub, index, or README leads readers to a superseded plan or omits the current guide.
-- **Consistent but unusable:** pages agree but omit prerequisites or choices readers need to perform the task.
-- **Artifact-first distraction:** many historical labels are corrected while current guides, specs, and indices still disagree.
-- **Routing mismatch:** human-readable roadmap or task prose disagrees with the machine-readable selection, queue, or workflow state.
-
-## Contract Drift Sweep
-
-When a pass changes or stabilizes a durable concept, derive its concept
-footprint before patching dependent surfaces.
-
-The footprint includes:
-
-- names: public terms, symbols, fields, statuses, commands, files, artifacts;
-- roles: producer, consumer, owner, authority, reviewer, runtime, adapter;
-- states: lifecycle labels, terminal outcomes, failure modes, waivers;
-- boundaries: public/internal, normative/informative, runtime/authoring,
-  generated/authored, semantic/view;
-- evidence: required artifacts, reports, manifests, tests, snapshots, run state;
-- examples: snippets, templates, fixtures, prompts, guides, compatibility docs.
-
-Follow that footprint from the owning contract through dependent guides,
-examples, prompts, workflows, and discovery routes, including generated
-references where relevant.
-
-Patch stale restatements, examples, status labels, routing entries, and open
-questions so they point to the same owning contract. Preserve intentional
-legacy or compatibility wording only when it is explicitly labeled and mapped
-to the current concept.
-
 ## Process
 
 1. Bound the work and state what must agree.
@@ -90,10 +56,14 @@ to the current concept.
    Respect explicit scope limits; report affected surfaces outside them rather
    than silently expanding the task.
 
-2. Find authority surfaces.
-   Start with the owning spec or design, applicable user/developer guide, and
-   reader entry points. Consult plans, prompts, workflow state, or manifests
-   when they explain the affected behavior; do not make them the default queue.
+2. Trace current authority and use.
+   Follow the entry point to the owning contract/design, guide, examples, and
+   operational consumers: prompts, configuration, and selection state. Trace
+   changed names, roles, states, and boundaries across all maintained specs and
+   designs that restate the affected contract and their dependents, including
+   generated references; do not stop at the initial file list. A plan or roadmap
+   belongs here when it governs current decisions; its path or date does not
+   decide. Consulting a source does not make it an edit target.
 
 3. Identify the reader-facing problem.
    Describe what readers cannot find, understand, or safely follow: conflicting
@@ -104,16 +74,21 @@ to the current concept.
    Follow the project's authority rules. Governing specs, policy, and approved
    designs outrank summaries or copied prompt wording. Plans supply scoped
    decisions and evidence; put lasting guidance in the appropriate maintained
-   spec, design, or guide. Do not invent policy to fill a documentation gap.
+   spec, design, or guide. If a rule was decided but never written, record it
+   once in the highest durable surface that governs future behavior; do not
+   invent policy to fill a documentation gap.
 
 5. Patch narrowly.
-   - Correct the owning contract where needed, then reconcile dependent guides,
-     examples, summaries, indices, and routes within the changed concept's scope.
+   - Correct the owning contract where needed, then reconcile other maintained
+     specs and designs, guides, examples, summaries, indices, and operational
+     consumers within the changed concept's scope.
    - Distinguish current instructions from explicitly scoped historical records;
      prefer a clear pointer over another copy of the same rule.
    - Replace label-based rules with contract-based rules.
    - Replace "always redo" with "audit/recover/promote when complete; redo on unrecoverable mismatch" when that preserves the contract.
-   - Remove or update stale duplicate wording across dependent task/design/prompt surfaces.
+   - Reconcile stale restatements and open questions with current authority;
+     retain proposed work or limitations only when that authority supports them,
+     without inventing narrower meanings for obsolete claims.
    - Keep genuine safety gates: provenance, verification, phase boundaries, and claim limits.
    - Update machine-readable routing state when the change affects selection, dependencies, or eligibility.
 
@@ -123,13 +98,11 @@ to the current concept.
      confirm the destinations, descriptions, status, and authority agree
    - check local links and section anchors, and compare documented commands,
      defaults, and examples with the owning contract and implementation
-   - resolve every cited path, selector, and command in scope by file/symbol
-     lookup or safe execution
-   - search affected surfaces using former and current terminology, including
-     equivalent descriptions of the same rule; check meaning, not just matching
-     words, and that the new rule appears wherever a dependent surface restates
-     it. Remaining old wording must be consistent with the current contract or
-     clearly scoped as historical
+   - search maintained specs, designs, and their dependents for old/new terms
+     and semantically equivalent claims; resolve paths, selectors, and commands
+     needed to use or verify the changed guidance. Preserve intentional legacy
+     behavior with its explicit scope. Historical citation chains do not expand
+     edit scope
    - `git diff` over touched files
    - parse/syntax smoke checks for any machine-readable files touched
    - validators for selection or routing state when routing changed
@@ -159,15 +132,3 @@ Good:
 ```text
 The owning contract, current guide and runnable example describe the new default; the index routes to them. The historical report keeps its original settings and is identified as history where current docs cite it.
 ```
-
-## Common Mistakes
-
-- Writing a new report instead of fixing the docs that future readers actually use.
-- Checking that links resolve without checking whether they route to the current authority and recipe.
-- Fixing only selected files while dependent guidance remains contradictory.
-- Weakening evidence requirements instead of making admissibility evidence-based.
-- Updating prose but not the machine-readable state the automation reads.
-- Auditing the whole repo by default when context already identifies the
-  relevant changed work.
-- Pasting implementation churn into specs when status/index docs are the right
-  surface.
