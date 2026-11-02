@@ -97,8 +97,6 @@ Classify the defect:
 - **artifact → evidence for itself**;
 - **failure → unrelated repair scope**;
 - **initial checklist → ban on necessary emergent work**.
-- **audit method → project requirement**;
-- **deadline or sunk cost → authority**.
 
 ### 4. Select the root correction
 
@@ -119,21 +117,6 @@ A remediation is incomplete until scenarios cover both:
 - **under-control:** claim laundering, skipped required checks, hidden failures, unsafe completion, lost recovery state;
 - **over-control:** inferred whole-module gates, unrelated supplemental failures, unconditional reviews, stale history, duplicate artifacts, and blocked necessary emergent work.
 
-Minimum scenario set:
-
-| Scenario | Expected behavior |
-|---|---|
-| Exact required selector passes | complete at that claim’s exercised scope |
-| Required selector cannot run | remain unverified; diagnose in scope |
-| Supplemental test fails unrelatedly | disclose at its actual scope; do not repin current work |
-| Supplemental test proves current regression | block through the violated requirement |
-| Authorized file changes public consumer contract | admit consumer work through the affected contract |
-| Historical report names “owned modules” | preserve wording as history; infer no gate |
-| Flaky required check | retain all outcomes; follow authoritative reliability policy |
-| Necessary work discovered mid-task | admit only with trigger, causal link, affected invariant, and closure condition |
-
-For flaky required checks, retain every outcome. A rerun is sufficient only when the current check contract or an existing reliability policy says so; otherwise report the evidence boundary as unresolved rather than selecting the favorable run.
-
 ### 6. Apply in causal order
 
 1. Authority and acceptance wording.
@@ -142,19 +125,18 @@ For flaky required checks, retain every outcome. A rerun is sufficient only when
 4. Todo, recovery-state, and cleanup admission.
 5. Focused ratchet detection after the primary rules stabilize.
 
-After each stage, simulate the scenarios above. Do not infer success from good-sounding prose.
+After each stage, re-check both failure directions. Do not infer success from good-sounding prose.
 
 ## Required Output
 
-Target 700 words and never exceed 1,200, counting headings and tables. Before returning, count the draft and compress wording or omit elaboration—not required fields—until it fits. Use exactly:
+Never exceed 1,200 words. Use:
 
 1. **Decision** — at most three sentences.
 2. **Acceptance unit** — one claim plus a table of at most eight requirements and sources.
 3. **Causal findings** — at most five chains, one line per arrow in each chain.
 4. **Remediation** — a table of at most ten source edits with `change`, `preserve`, and `why`.
-5. **Simulation** — the eight minimum scenarios above, one terse row each; add a row only for a distinct affected boundary.
+5. **Simulation** — one terse row per affected boundary, covering both failure directions.
 6. **Residual risks** — at most five unresolved judgments or missing facts.
-7. **A/B handoff** — one paragraph naming immutable candidate, treatment delta, expected behavior, and known confounders.
 
 Every item must support a decision or executable edit. Existing evidence retains facts; the audit does not propose a new storage destination merely to preserve them. Return the record in chat unless the user or current authority requests a persisted artifact.
 
@@ -181,10 +163,8 @@ acceptance unit. Preserve the legacy failure result at its actual scope.
 | “Formal change control prevents recurrence.” | Correct the causal source first. Do not install a new governance system by default. |
 | “Audit every related file to be safe.” | Trace disputed causal sources; repository adjacency is not authority. |
 | “The process is cheap compared with a regression.” | Cost does not establish effectiveness or applicability. Test the claimed control. |
-| “This skill says the check is required.” | The skill constrains audit reasoning; only current project or user authority defines the check. |
 | “The rerun passed, so the first failure no longer matters.” | Preserve both outcomes; use a sourced retry or reliability rule to decide sufficiency. |
 | “Update every consumer for consistency.” | Update only consumers proven to execute or currently repeat the wrong rule. |
-| “We already invested in these todos.” | Sunk cost cannot supply their missing authority or causal link. |
 
 ## Red Flags
 
@@ -197,7 +177,4 @@ Stop and re-scope if the remediation:
 - declares success without testing under-control and over-control scenarios;
 - suppresses an actual changed contract because it was not in the initial plan;
 - proposes a registry, dashboard, ticket, SLA, recurring audit, or mandatory report without current authority.
-- cites this audit method, urgency, or sunk cost as the source of a project requirement;
-- treats a favorable rerun as sufficient without a current retry or reliability contract.
-
-After remediation is ready, **REQUIRED NEXT SKILL:** use `running-controlled-agent-ab-tests` to test process behavior without letting trial artifacts manufacture authority.
+- cites this audit method, urgency, or sunk cost as the source of a project requirement.
