@@ -11,7 +11,7 @@ The user names a scope. Gemini writes it in AI Studio. You coordinate: you give 
 
 Gemini knows only what is in the chat. A fact the passage needs is either in the files you upload or it comes back invented. The work is therefore in the brief and in the check, not in the browser.
 
-**Default manuscript:** `~/Documents/ptycho-2026` (`manuscript.tex`, the files it `\input`s, `manuscript.pdf`, `references.bib`). The repository's own rule files outrank this skill. List its top-level `.md` files and read the ones that govern the text before writing a brief; currently `PHASE-1-EDITING.md`, the "Decided today" section of `HANDOFF.md`, and any decision record the scope touches (for example `MODULAR-FRAMING.md`). Where two rule files disagree, the later-dated one wins. Where the request itself goes against a rule file (for example a rule that this phase drafts no prose), the explicit request stands for the drafting and the rule files still govern wording; name the conflict in the scope line.
+**Default manuscript:** `~/Documents/ptycho-2026` (`manuscript.tex`, the files it `\input`s, `manuscript.pdf`, `references.bib`). The repository's own rule files outrank this skill. List its top-level `.md` files and read the ones that govern the text before writing a brief; currently the "Decided today" section of `HANDOFF.md`, and any decision record the scope touches (for example `MODULAR-FRAMING.md`). Where two rule files disagree, the later-dated one wins. Where the request itself goes against a rule file, the explicit request stands for the drafting and the rule files still govern wording; name the conflict in the scope line.
 
 ## Steps
 
