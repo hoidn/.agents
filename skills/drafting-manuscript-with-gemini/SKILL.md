@@ -45,6 +45,7 @@ Work in `<scratchpad>/gemini/<slug>/`, with `<slug>` a short name for the scope.
 - `manuscript.tex` and every file it `\input`s on an uncommented line, followed recursively, copied as they are now. Uploads are flat: a file from a subdirectory is named in the brief with its original path.
 - The PDF, for layout and figures; the brief says that the `.tex` is authoritative where the two differ. Over 10 MB, split it: `python <this skill's directory>/scripts/split_pdf.py manuscript.pdf <pack>/` (lossless, one part per upload call).
 - `references.bib` when the scope cites.
+- `prose-standards.md` from this skill's directory, unchanged.
 - `brief.md`, written to the contract below.
 
 Nothing else from either repository goes into `pack/`. Beside it, not uploaded: `notes.md` with `git rev-parse HEAD` and the source of each fact, and later `reply.tex`.
@@ -57,10 +58,10 @@ Nothing else from either repository goes into `pack/`. Beside it, not uploaded: 
 2. **Current text.** The passage verbatim for a rewrite, `%` comment lines included, with the instruction to keep those lines in place; "none" for new text.
 3. **Purpose.** What a reader must take from the passage. The claims it makes, and the claims it must not make.
 4. **Facts.** A table: quantity, value with unit, measured on what, final or pending. Below it, any definition, equation or algorithm step that the manuscript does not already contain.
-5. **Constraints.** The repository rules that bind this passage, quoted from the rule files; the macros, `\label`s and `\cite` keys the passage needs, each checked to exist; a length target taken from the current text or its neighbours.
+5. **Constraints.** A line stating which sections of the attached `prose-standards.md` apply to this target (for Results, all sections; for Abstract, Introduction or Discussion, state which Results-only rules are waived); the repository rules that bind this passage, quoted from the rule files; the macros, `\label`s and `\cite` keys the passage needs, each checked to exist; a length target taken from the current text or its neighbours.
 6. **Output.** Verbatim:
 
-   > Reply with one fenced `latex` code block that contains only the text to be placed in the manuscript, and end the block with the line `% END OF DRAFT`. After the block, under the heading "Notes", list: (a) every statement or number you used that is in neither this brief nor the printed text of the manuscript; (b) every fact you needed and did not have; (c) questions. Use only numbers given in this brief or printed in the manuscript; a number that appears only in a `%` comment of the sources is not to be used. Where a fact is missing, write `\pending{?}` in its place and list it under (b). Wrap every value marked pending in `\pending{...}`.
+   > Reply with one fenced `latex` code block that contains only the text to be placed in the manuscript, and end the block with the line `% END OF DRAFT`. After the block, under the heading "Notes", list: (a) every statement or number you used that is in neither this brief nor the printed text of the manuscript; (b) every fact you needed and did not have; (c) questions; (d) every fact in the current text that your text no longer states; (e) every primary result you left out because no figure or table shows it. Use only numbers given in this brief or printed in the manuscript; a number that appears only in a `%` comment of the sources is not to be used. Where a fact is missing, write `\pending{?}` in its place and list it under (b). Wrap every value marked pending in `\pending{...}`.
 
 ### 4. Send, and 5. Retrieve
 
@@ -78,6 +79,8 @@ Report the chat URL, model, thinking level and grounding state with the draft.
 | Numbers | every numeral in the draft is in the brief's Facts or in the manuscript's printed text (not a `%` comment), with the same value and unit |
 | Pending | every pending value is inside `\pending{}` |
 | References | every `\ref`, `\cite` and macro resolves in the `.tex` and `.bib` |
+| Display items | every primary or comparative number is printed in a figure or table; minor one-off control numbers in text have provenance in `notes.md`; any unfigured primary result is listed for the user |
+| Standards | the applicable hard invariants of `prose-standards.md` hold; check passage length against the brief and review `Shape` guidelines for clarity (do not trigger revisions over minor word or parenthesis counts alone) |
 | Rules | the Constraints of the brief hold |
 | Scope | nothing outside the target changed; claims beyond Purpose are listed for the user |
 
@@ -107,4 +110,5 @@ Asking for this workflow authorizes uploading the pack to AI Studio under the us
 | Typing a multi-line prompt | Enter sends it half-written |
 | Reading the reply from the rendered text | math and backslashes are lost; read the code block |
 | Applying to the `.tex` and leaving it uncommitted | another session's path-scoped commit carries the hunk away |
+| A brief with no prose standards | the draft reads the tables aloud, coins synonyms for defined terms and states untested causes; two reviews and two revision rounds to undo |
 | Fixing Gemini's substance yourself | the user reviews text that neither they nor Gemini wrote; send it back or flag it |
