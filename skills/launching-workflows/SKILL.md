@@ -16,7 +16,7 @@ periodic recovery loop.
    - Fix validation errors before launching a long run.
 
 2. Launch the workflow in tmux.
-   - Use the `tmux` skill.
+   - Use the `tmux` skill if installed; otherwise launch detached with `tmux new-session -d -s <session> "<cmd>"` and inspect via `tmux capture-pane -pt <session>`.
    - Use a clear session name.
    - Include `--stream-output` for live inspection.
    - Enable observability flags when useful: `--step-summaries`, summary provider, and `--live-agent-notes`.
@@ -43,10 +43,14 @@ periodic recovery loop.
 
 ## Watchdog Loop Template
 
+Set `TMUX_OPTS="-S <socket>"` when using a dedicated tmux socket, or leave empty for the default server. Break out of the loop once `state.json` reaches a terminal status so finished runs do not leave zombie watchdogs:
+
 ```bash
-tmux -S /tmp/claude-tmux-sockets/claude.sock new-session -d -s <watchdog-session> \
+tmux ${TMUX_OPTS:-} new-session -d -s <watchdog-session> \
   "cd <repo> && export PYTHONPATH=<repo>\${PYTHONPATH:+:\$PYTHONPATH}; \
    while true; do \
+     status=\$(python -c 'import json, pathlib; p=pathlib.Path(\".orchestrate/runs/<run_id>/state.json\"); print(json.loads(p.read_text()).get(\"status\",\"\") if p.exists() else \"\")'); \
+     case \"\$status\" in COMPLETED|FAILED|CANCELLED) echo \"==== \$(date -Iseconds) run <run_id> terminal (\$status); stopping watchdog ====\"; break ;; esac; \
      echo \"==== \$(date -Iseconds) watchdog probe for <run_id> ====\"; \
      python -m orchestrator run workflows/examples/generic_run_watchdog.yaml \
        --stream-output \
@@ -63,6 +67,7 @@ tmux -S /tmp/claude-tmux-sockets/claude.sock new-session -d -s <watchdog-session
 ## Common Mistakes
 
 - Mistaking one watchdog probe for a loop. If there is no `while true`, it is not a watchdog loop.
+- Leaving a watchdog loop running after the target run reaches a terminal state (`COMPLETED`, `FAILED`, or `CANCELLED`).
 - Starting the watchdog before the new run id is known, then targeting a stale run.
 - Reusing old watchdog state paths, which hides which run was actually probed.
 - Checking only tmux output and not `.orchestrate/runs/<run_id>/state.json`.

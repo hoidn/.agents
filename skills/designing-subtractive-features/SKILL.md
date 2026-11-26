@@ -7,75 +7,63 @@ description: Use when designing or revising a feature, API, spec, or internal ar
 
 ## Overview
 
-Design the smallest final system, not the smallest patch. Do not approve until
-user experience, domain contract, owners,
-migrations, and deletions agree.
+Design the smallest final system, not the smallest patch. Do not finalize a design until user experience, domain contract, module ownership, migrations, and deletions agree.
 
-**REQUIRED SUB-SKILL:** Use `design-spec-drafting` to select repository
-authorities before choosing an API.
+**REQUIRED SUB-SKILL:** Use `design-spec-drafting` to select repository authorities before choosing an API.
 
-## Approval Gate and Quick Reference
+## Design Gate
 
 | Gate | Required evidence |
 | --- | --- |
 | Goal | Observable flow, non-goals, invariants, complexity target |
-| Current | Doors, callers, config currencies, bodies, persistence, owners |
-| Alternatives | Goal-derived clean slate compared with incumbent |
-| Public | Normal/advanced examples, names, returns, discovery, errors |
-| Internal | Target graph, owners, exceptions, migrations, deletions |
-| Proof | Contract, compatibility, persistence, path-count feasibility |
+| Current state | Existing entry points, callers, config formats, implementations, persistence, owners |
+| Alternatives | Goal-derived clean-slate design compared with incumbent |
+| Public API | Common and advanced examples, names, returns, discovery, error behavior |
+| Internal design | Target call graph, module owners, exceptions, migrations, deletions |
+| Feasibility | Contract, compatibility, persistence, and net path-reduction proof |
 
-Material contract/topology gaps block approval; report them with the candidate.
+Material contract or architecture gaps block design approval; report them alongside the candidate.
 
 ## Workflow
 
-1. Follow the documentation index; trace callers before signatures. Selected
-   files are not an ownership proof.
-2. Derive a clean-slate target, compare with the incumbent, then select or
-   synthesize. Prior approval makes a candidate, not an answer.
-3. Pressure-test ordinary/grouped examples, alternate models, same/different
-   input, paths, returns, workspace, discovery, errors, and visualization.
-4. Table ambiguous inputs, defaults, conversions, persistence/replay, and
-   failures. Preserve domain distinctions; remove ceremony.
-5. Make each new door, type, adapter, record, schema field, alias, or service
-   replace something; otherwise prove it irreducible or cut it.
-6. Draft behavior and internal architecture together; plan only after the gate.
+1. Follow the repository's documentation index and trace real callers before proposing signatures. Reading selected files alone does not establish ownership.
+2. Derive a clean-slate target from the goal, compare it with the incumbent, then select or synthesize. Prior approval makes a candidate, not an answer.
+3. Pressure-test realistic usage: common vs. advanced workflows, alternate configurations/backends, same vs. different inputs, return types, discovery, errors, and end-to-end examples.
+4. Make ambiguous inputs, defaults, conversions, persistence, and failure modes explicit. Preserve real domain distinctions; cut ceremony.
+5. Make every new entry point, type, adapter, record, schema field, alias, or service replace an existing one; otherwise prove it is irreducible or cut it.
+6. Draft public behavior and internal architecture (including deletions) together; start implementation planning only after the gate passes.
 
-Investigate repository facts yourself and batch only genuine product choices.
-Do not seek partial approvals. Withholding approval does not authorize a
-prototype, shim, mock, or parallel path.
+Investigate repository facts yourself and batch only genuine product choices for the user.
+
+**Spikes vs. shims:** Minimal throwaway feasibility spikes (e.g., an executable fixture required by `design-spec-drafting` to verify an unproven capability) are allowed during design, provided they are never shipped. Do not bypass the gate by landing a shipping prototype, compatibility shim, wrapper, or parallel path.
 
 ## Topology Test
+
+Avoid layering a new abstraction over legacy paths:
 
 ```text
 new API -> request/adapter -> old workflow -> config translation -> core
 ```
 
-should become:
+Converge onto one canonical path and delete displaced entry points:
 
 ```text
-Python/CLI -> one public door -> canonical resolver -> existing core
-specialized caller -------------------------------> existing core
+Python/CLI -> one public entry point -> canonical resolver -> existing core
+specialized caller ----------------------------------------> existing core
 ```
 
-Migrate callers and delete displaced doors; retain specialized paths.
+Migrate callers and delete displaced entry points; keep genuinely specialized low-level paths direct.
 
-## Common Mistakes and Rationalizations
+## Common Rationalizations
 
 | Rationalization | Correction |
 | --- | --- |
-| "It is already approved." | Without current evidence, approval is provisional. |
-| "I read the relevant docs." | Trace the complete maintained path and consumers. |
-| "The wrapper is thin." | Count the old path it leaves alive. |
-| "Compatibility might need an alias." | Require a contract or consumer inventory. |
-| "Simplify after it works." | Complexity reduction is not follow-up debt. |
-| "Gaps are implementation details." | Contract- or topology-changing gaps block approval. |
+| "It is already approved." | Without current codebase evidence, approval is provisional. |
+| "The wrapper is thin." | Count the old path and config surface it leaves alive. |
+| "Compatibility might need an alias." | Require a real contract or caller inventory before keeping compatibility machinery. |
+| "Simplify after it works." | Complexity reduction is part of the design, not follow-up debt. |
 | "A record/schema is safer." | Persist only irreducible facts. |
-| "Use a provisional path." | Missing evidence does not expand scope. |
 
 ## Red Flags
 
-Stop when signatures precede the owner map; examples leak unjustified
-`Payload`/`Request`/`Result`/`Adapter` ceremony; new doors leave equivalents
-alive; behavior lacks a target graph/deletions; planning starts with gaps; or a
-prototype bypasses the gate. Never claim approval before every gate passes.
+Stop and revise when: signatures precede an ownership/caller map; examples introduce unjustified `Payload`/`Request`/`Result`/`Adapter` ceremony; new entry points leave equivalent old ones alive; the design lacks a concrete deletion list; or a shipping shim bypasses the gate.

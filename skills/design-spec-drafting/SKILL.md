@@ -10,9 +10,8 @@ Keep durable specs/designs status-independent: document contracts and evidence r
 Before drafting or revising a spec, system architecture, implementation
 architecture, design doc, or plan:
 
-1. Read the repo's `docs/index.md`.
-2. Use its reading paths, clarification table, and linked entries to choose the
-   relevant referenced `.md` files.
+1. Read the repo's `docs/index.md` (or primary documentation index).
+2. Use its reading paths and linked entries to choose the relevant referenced `.md` files.
 3. Read only the docs relevant to the in-context design type:
    - specs: normative `specs/` surfaces and linked explanatory docs;
    - system architecture: governing system/design docs and any required spec
@@ -35,10 +34,10 @@ when the design depends on:
 - replacing a special-case path with a generic mechanism;
 - combining subsystems in a shape not covered by existing specs or fixtures;
 - preserving a public API while changing its implementation substrate;
-- a type, lowering, state, resume, runtime, or source-map capability that is not
-  already specified or tested;
-- a negative architecture claim such as no compiler-special branch, no hidden
-  input, no runtime ref value, or no report parsing.
+- an unspecified or untested runtime, type, persistence, resume, or lowering
+  capability;
+- a negative architecture claim such as no special-case branch, no hidden
+  input, or no report parsing.
 
 The proof should identify the relevant spec/design/test authority and either
 show a minimal executable fixture or record the missing capability as a

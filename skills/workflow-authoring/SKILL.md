@@ -15,29 +15,16 @@ If you find yourself putting counters, loop mechanics, keep/discard rules, ledge
 
 Treat the repo's workflow drafting guide as a live checklist, not background reading.
 
-## Required Reading Order
+## Reading Order (On Demand)
 
-Before drafting or changing a workflow:
+Always start with the target repo's `docs/index.md` and local workflow/runbook docs for project-local policy, state roots, and artifact contracts. Then read only the canonical DSL docs relevant to the surface you are changing:
 
-1. `docs/index.md`
-2. `docs/workflow_drafting_guide.md`
-3. `specs/dsl.md`
-4. `specs/variables.md`, `specs/dependencies.md`, `specs/providers.md`
-5. `workflows/README.md` and one current example using the same pattern
+- authoring structure / checklist: `docs/workflow_drafting_guide.md`
+- step types, control flow, schema: `specs/dsl.md`
+- specific touched surfaces: `specs/variables.md`, `specs/dependencies.md`, `specs/providers.md`
+- concrete pattern reference: `workflows/README.md` and one current example
 
-For downstream repos that consume the agent-orchestration DSL but do not carry
-the canonical workflow-authoring docs locally, use the canonical source repo at
-`/home/ollie/Documents/agent-orchestration` for items 2-5 above:
-
-- `/home/ollie/Documents/agent-orchestration/docs/workflow_drafting_guide.md`
-- `/home/ollie/Documents/agent-orchestration/specs/dsl.md`
-- `/home/ollie/Documents/agent-orchestration/specs/variables.md`
-- `/home/ollie/Documents/agent-orchestration/specs/dependencies.md`
-- `/home/ollie/Documents/agent-orchestration/specs/providers.md`
-- `/home/ollie/Documents/agent-orchestration/workflows/README.md`
-
-Still read the downstream repo's own `docs/index.md` and workflow/runbook docs
-first for project-local policy, state roots, and artifact contracts.
+For downstream repos that consume the `agent-orchestration` DSL without local copies of those specs, read the canonical copies from `/home/ollie/Documents/agent-orchestration/` (if present).
 
 ## Authoring Checklist
 
@@ -48,7 +35,7 @@ first for project-local policy, state roots, and artifact contracts.
    Prompts choose, propose, revise, review, or edit.
    Workflows parse outputs, enforce contracts, gate, loop, wait, record state, and decide next steps.
 
-3. Keep the four surfaces distinct.
+3. Keep these five surfaces distinct.
    - workflow boundary: `inputs` / `outputs`
    - runtime dependencies: `depends_on` / `consumes`
    - provider prompt sources: `input_file`, `asset_file`, prompt injection
@@ -69,7 +56,7 @@ first for project-local policy, state roots, and artifact contracts.
 7. Keep string-rich or high-entropy state in JSON files when the DSL surface is awkward.
    Do not force brittle scalar contracts just because a value is logically small.
 
-8. For v2.14 workflows, use `materialize_artifacts` for deterministic input/target materialization, `pre_snapshot` plus `select_variant_output` for content-based candidate selection, `variant_output` for tagged-union bundles, and `match` or `requires_variant` before referencing variant-only fields.
+8. When the target DSL supports runtime-owned materialization and tagged variants, use `materialize_artifacts` for deterministic input/target materialization, `pre_snapshot` plus `select_variant_output` for content-based candidate selection, `variant_output` for tagged-union bundles, and `match` or `requires_variant` before referencing variant-only fields.
 
 ## Prompt Editing Checklist
 

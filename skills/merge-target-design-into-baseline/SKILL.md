@@ -42,13 +42,12 @@ finished?"
    - Keep unfinished target work in the target or roadmap docs.
 
 4. Remove target-era framing from baseline docs.
-   - Avoid phrases like "G8 is done", "current drain", "active manifest lane",
-     "recently landed", "this tranche", "implementation just completed", or
-     "current checkout status" unless the baseline explicitly documents a
-     stable compatibility lane.
-   - Prefer descriptive contract language: "runtime-native transitions are the
-     semantic route"; "certified adapters are compatibility backends"; "views
-     are representations, not semantic authority."
+   - Avoid phrases like "phase X is done", "recently landed", "this tranche",
+     "implementation just completed", or "current checkout status" unless the
+     baseline explicitly documents a stable compatibility lane.
+   - Prefer descriptive contract language: "X is the default path"; "legacy
+     adapters are compatibility backends"; "derived views are representations,
+     not semantic authority."
 
 5. Reconcile companion docs.
    - Update routing/index docs so readers know which doc is authoritative.
@@ -69,8 +68,8 @@ finished?"
 
 Promote these when implemented or accepted:
 
-- public language/runtime contracts;
-- current compiler pipeline and default route;
+- public API and runtime contracts;
+- current default execution pipeline;
 - typed data and effect models;
 - resource, context, state, path, resume, and provenance ownership;
 - validation and diagnostic rules;

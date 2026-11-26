@@ -37,7 +37,7 @@ For each direct dependency in build files (pom.xml, build.gradle.kts, package.js
 
 - Does the language stdlib already provide this? → `stdlib: dep X, stdlib has Y`
 - Does the platform/framework provide this? → `native: dep X, platform has Y`
-- Is it used by more than one file? Grep for imports. Single file → `delete: dep X used in 1 file`
+- Is it used by only one file? Grep for imports. Flag `delete: dep X used in 1 file` only when stdlib or existing deps can replace it in ~20 lines; do not flag genuine external libraries (e.g., scientific, plotting, I/O, DB) merely because they are cleanly isolated in one adapter module.
 - Is it a transitive dep already provided by a framework dep? → `shrink: dep X, already in Y's tree`
 
 Rank by: deps that can be fully removed first.
@@ -51,7 +51,7 @@ Scan source files for these patterns:
 - Factory that produces one product → `yagni: factory X, creates Y only. Constructor call.`
 - Config/constant file where every value is used exactly once → `shrink: config X, inline the values.`
 - Wrapper/decorator that adds nothing over the wrapped thing → `delete: wrapper X, delegates all calls to Y.`
-- Module/file that exports one function/class → `shrink: file X exports Y. Merge into caller.`
+- Tiny module exporting one trivial helper with a single caller → `shrink: file X exports Y. Merge into caller.` (Exempt cohesive classes, CLI entrypoints, and public module boundaries.)
 - Dependency injection for dependencies that are never swapped in tests → `yagni: DI for X, never mocked. Construct directly.`
 
 ### Phase 4: Code-level audit
@@ -61,14 +61,14 @@ Sample up to 20 source files (largest first, then random). For each:
 - Hand-rolled algorithm that stdlib provides → `stdlib: file X line N, hand-rolled Y. Use Z.`
 - Utility function duplicating a built-in → `stdlib: file X, util Y. Built-in Z does this.`
 - Error handling that swallows and re-throws identically → `shrink: file X, catch-and-rethrow. Remove wrapper.`
-- Comments that repeat the code → `delete: file X, comments restate the code. Code is the doc.`
+- Comments that merely restate syntax/what the code does → `delete: file X, comments restate the code.` (Keep comments explaining non-obvious invariants, geometry, or why.)
 - TODO/FIXME older than 6 months → `delete: file X, stale TODO from [date]. Act or remove.`
 - Feature flag / config toggle never set to the alternate value → `yagni: file X, toggle Y always Z. Remove the branch.`
 - Logging/debug scaffolding in production paths → `delete: file X, debug logging. Replace with structured logger or remove.`
 
 ### Phase 5: Structural audit
 
-- Source directory with fewer than 3 files → `shrink: dir X has N files. Merge or flatten.`
+- Source directory with 1–2 tiny internal files and no distinct boundary → `shrink: dir X has N files. Merge or flatten.`
 - Package/namespace with no public API (everything internal) → `shrink: package X, no exports. Flatten into parent.`
 - Empty test file or test file with only imports/setup → `delete: test file X, no assertions.`
 - Build config for a module/target that produces nothing used → `delete: build target X, output unused.`
@@ -114,11 +114,11 @@ Produce the report in this structure:
 net: -<N> lines possible, -<M> dependencies possible.
 ```
 
-Tags match ponytail-review: `delete:`, `stdlib:`, `native:`, `yagni:`, `shrink:`.
+Tags: `delete:`, `stdlib:`, `native:`, `yagni:`, `shrink:`.
 
 ## Boundaries
 
 - Complexity only. Correctness bugs, security holes, performance problems → different review.
 - Does not apply fixes. Lists findings only.
 - Sampling-based for large codebases — you do not need to read every file.
-- One-shot report. "stop ponytail-audit" or "normal mode" to revert.
+- One-shot report; does not persist across turns.

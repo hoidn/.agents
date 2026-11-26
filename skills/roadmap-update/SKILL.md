@@ -45,61 +45,58 @@ For agent-orchestration workflows, also use `workflow-authoring`.
    - Create or update each tranche/task brief referenced by the roadmap.
    - Keep dependency rationale and completion gates aligned with the new structure.
 
-4. Update machine-readable routing artifacts.
-   For major-project tranche manifests, each new tranche needs:
-
-   ```text
-   tranche_id
-   title
-   brief_path
-   design_target_path
-   design_review_report_target_path
-   plan_target_path
-   plan_review_report_target_path
-   execution_report_target_path
-   implementation_review_report_target_path
-   item_summary_target_path
-   prerequisites
-   status
-   design_depth
-   completion_gate
-   ```
-
-   Use `pending` for new work. Preserve `completed` tranche metadata such as `last_item_outcome`, `last_execution_report_path`, and `last_item_summary_path`. Do not mark work completed because the prose exists.
+4. Update machine-readable routing artifacts (if the repo uses a manifest/queue).
+   - Keep item IDs, brief paths, `prerequisites`/dependencies, and statuses aligned with the prose roadmap.
+   - Use `pending` (or the repo's initial status) for new work, and preserve existing completion metadata on finished items. Do not mark work completed merely because a design, plan, or brief exists.
 
 5. Check active-run safety.
-   - Inspect whether the running selector reads the manifest live or uses a cached artifact.
+   - Inspect whether any running selector reads the manifest live or uses a cached artifact.
    - If an active run is between selector iterations, update before the next selection.
    - If a provider or script may overwrite the file from stale state, pause/resume or wait for the current update step to finish before editing.
    - Do not edit unrelated run snapshots to force a result.
 
 6. Validate deterministically.
-   Prefer the project’s validator/selector scripts. For agent-orchestration major-project manifests:
-
-   ```bash
-   python workflows/library/scripts/validate_major_project_tranche_manifest.py \
-     --root <repo> \
-     --project-brief-path <brief> \
-     --project-roadmap-pointer <file containing roadmap path> \
-     --tranche-manifest-pointer <file containing manifest path> \
-     --state-root <tmp validation dir>
-
-   python workflows/library/scripts/select_major_project_tranche.py \
-     --root <repo> \
-     --project-brief-path <brief> \
-     --project-roadmap-path <roadmap> \
-     --tranche-manifest-path <manifest> \
-     --state-root <state root> \
-     --output-bundle <tmp selection json>
-   ```
-
-   Also run `python -m json.tool` or the repo’s structured parser on JSON/YAML files you edited.
+   - Run the repo's manifest validator or selector script if one exists.
+   - Run `python -m json.tool` or the repo's structured parser on any JSON/YAML files you edited.
 
 7. Check discoverability.
    If you created durable docs, specs, roadmap files, or generated projections that future agents should find, update relevant indexes such as `docs/index.md`.
 
 8. Report the routing effect.
-   State the before/after tranche count, ready/pending/completed/blocked counts, next selected item, and whether an active workflow picked up or should pick up the change.
+   State the before/after item counts, ready/pending/completed/blocked counts, next selected item (if applicable), and whether an active workflow picked up or should pick up the change.
+
+## Optional: `agent-orchestration` Major-Project Manifests
+
+Apply this section only in repos using `workflows/library/scripts/validate_major_project_tranche_manifest.py`.
+
+Each new tranche entry requires:
+
+```text
+tranche_id, title, brief_path, design_target_path,
+design_review_report_target_path, plan_target_path,
+plan_review_report_target_path, execution_report_target_path,
+implementation_review_report_target_path, item_summary_target_path,
+prerequisites, status, design_depth, completion_gate
+```
+
+Preserve `completed` tranche metadata (`last_item_outcome`, `last_execution_report_path`, `last_item_summary_path`). Validate with:
+
+```bash
+python workflows/library/scripts/validate_major_project_tranche_manifest.py \
+  --root <repo> \
+  --project-brief-path <brief> \
+  --project-roadmap-pointer <file containing roadmap path> \
+  --tranche-manifest-pointer <file containing manifest path> \
+  --state-root <tmp validation dir>
+
+python workflows/library/scripts/select_major_project_tranche.py \
+  --root <repo> \
+  --project-brief-path <brief> \
+  --project-roadmap-path <roadmap> \
+  --tranche-manifest-path <manifest> \
+  --state-root <state root> \
+  --output-bundle <tmp selection json>
+```
 
 ## Common Mistakes
 
